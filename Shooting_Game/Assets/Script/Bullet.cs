@@ -21,6 +21,10 @@ public class Bullet : MonoBehaviour
 		// タグ付与
 		gameObject.tag = isEnemy ? "EnemyBullet" : "PlayerBullet";
 		
+		// 色設定
+		//gameObject.GetComponent<TrailRenderer>() = isEnemy ? new Color(1.0f, 0.2f, 0.0f) : new Color(0.5f, 0.5f, 1.0f);
+		gameObject.GetComponent<Image>().color = isEnemy ? new Color(1.0f, 0.2f, 0.0f) : new Color(0.5f, 0.5f, 1.0f);
+
 		// ショット方向設定
 		Vector3 vec = new Vector3((Mathf.Sin(angle) * Screen.width * 2), Mathf.Cos(angle) * Screen.width * 2);
 		transform.DOLocalMove(pos + vec, speed)
@@ -28,7 +32,5 @@ public class Bullet : MonoBehaviour
 			{
 				Destroy(this.gameObject);
 			});
-
-		GetComponent<Image>().color = isEnemy ? new Color(1.0f, 0.2f, 0.0f) : new Color(0.5f, 0.5f, 1.0f);
 	}
 }

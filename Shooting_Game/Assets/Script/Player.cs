@@ -13,6 +13,12 @@ public class Player : MonoBehaviour
 	float life;
 	public float angle;
 
+	int enemyDestroy = 0;	// 敵を倒した数
+	int optionPower = 0;	// ショットのタイプ
+
+
+	Tween shotTw;	// 弾発射用のツイナ―
+
 	void Awake()
 	{
 		Input.gyro.enabled = true;
@@ -22,11 +28,13 @@ public class Player : MonoBehaviour
 	{
 		bm			= GameObject.Find("BulletManager").GetComponent<BulletManager>();
 		barrier		= transform.Find("Barrier").gameObject;
-		image		= GetComponent<Image>();
+		image		= gameObject.GetComponent<Image>();
 		lifegauge	= GameObject.Find("LifeGauge").GetComponent<LifeGauge>();
 
 		life = MAX_LIFE;
 		angle = 0;
+		
+		shotTw = DOVirtual.DelayedCall(0.5f, () => bm.CreateBullet(1.0f, 5.0f, transform.localPosition, -angle, false)).SetLoops(-1).Play();
 	}
 
 	void Update()
@@ -52,11 +60,14 @@ public class Player : MonoBehaviour
 			angle = Mathf.Atan2(-v.x, v.y);
 			transform.localRotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
 		}
+
+		//bm.CreateBullet(1.0f, 5.0f, transform.localPosition, -angle, false);
+
 		
 
 		if(Input.GetKeyDown(KeyCode.Space))
 		{
-			bm.CreateBullet(2.0f, 5.0f, transform.localPosition, -angle, false);
+			//bm.CreateBullet(1.0f, 5.0f, transform.localPosition, -angle, false);
 		}
 	}
 
@@ -92,6 +103,32 @@ public class Player : MonoBehaviour
 		{
 			// シーン遷移
 			GameObject.Find("FadeCanvas").GetComponent<Fade>().FadeCall("result", 0);
+		}
+	}
+
+	public void DestroyEnemy(int evType = 0)
+	{
+		enemyDestroy++;
+
+		if(enemyDestroy == 1)
+		{
+			shotTw.Kill();
+			shotTw = DOVirtual.DelayedCall(0.5f, () => {
+			bm.CreateBullet(1.0f, 5.0f, transform.localPosition, -angle - 0.1f, false);
+			bm.CreateBullet(1.0f, 5.0f, transform.localPosition, -angle, false);
+			bm.CreateBullet(1.0f, 5.0f, transform.localPosition, -angle + 0.1f, false);
+			}).SetLoops(-1).Play();
+		}
+		else if(enemyDestroy == 2)
+		{
+			shotTw.Kill();
+			shotTw = DOVirtual.DelayedCall(0.5f, () => {
+			bm.CreateBullet(1.0f, 5.0f, transform.localPosition, -angle - 0.1f, false);
+			bm.CreateBullet(1.0f, 5.0f, transform.localPosition, -angle - 0.2f, false);
+			bm.CreateBullet(1.0f, 5.0f, transform.localPosition, -angle, false);
+			bm.CreateBullet(1.0f, 5.0f, transform.localPosition, -angle + 0.2f, false);
+			bm.CreateBullet(1.0f, 5.0f, transform.localPosition, -angle + 0.1f, false);
+			}).SetLoops(-1).Play();
 		}
 	}
 }

@@ -9,62 +9,34 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1198571929996586}
+  m_RootGameObject: {fileID: 1772338834328968}
   m_IsPrefabParent: 1
---- !u!1 &1198571929996586
+--- !u!1 &1772338834328968
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 224963151362900270}
-  - component: {fileID: 222510611346596786}
-  - component: {fileID: 114966921953138214}
-  - component: {fileID: 58107728211389890}
-  - component: {fileID: 114653421069244026}
+  - component: {fileID: 224570381495146918}
+  - component: {fileID: 222816086496815258}
+  - component: {fileID: 114387118094278884}
+  - component: {fileID: 114786536346049686}
+  - component: {fileID: 58119272105385960}
+  - component: {fileID: 96588862658054736}
   m_Layer: 5
-  m_Name: Bullet
+  m_Name: PBullet
   m_TagString: PlayerBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1909162276282772
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4557037587680464}
-  - component: {fileID: 96165331789206428}
-  m_Layer: 5
-  m_Name: Trail
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4557037587680464
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1909162276282772}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 224963151362900270}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &58107728211389890
+--- !u!58 &58119272105385960
 CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1198571929996586}
+  m_GameObject: {fileID: 1772338834328968}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -74,13 +46,13 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 10
---- !u!96 &96165331789206428
+--- !u!96 &96588862658054736
 TrailRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1909162276282772}
+  m_GameObject: {fileID: 1772338834328968}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -88,7 +60,7 @@ TrailRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 85ad81d267a088d4b875a38ca77ee7ed, type: 2}
+  - {fileID: 2100000, guid: 08b37c1414fba6948bb6b3248d934e3f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -106,7 +78,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_Time: 0.1
   m_Parameters:
     serializedVersion: 2
@@ -117,14 +89,14 @@ TrailRenderer:
       - serializedVersion: 2
         time: 0
         value: 1
-        inSlope: 0
-        outSlope: 0
+        inSlope: -1.0389609
+        outSlope: -1.0389609
         tangentMode: 0
       - serializedVersion: 2
-        time: 0.980011
+        time: 1
         value: 0
-        inSlope: 0
-        outSlope: 0
+        inSlope: -0.9285715
+        outSlope: -0.9285715
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -132,7 +104,7 @@ TrailRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -165,24 +137,25 @@ TrailRenderer:
     generateLightingData: 0
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
---- !u!114 &114653421069244026
+--- !u!114 &114387118094278884
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1198571929996586}
+  m_GameObject: {fileID: 1772338834328968}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e63635c7e71dbc945871e2d1054db3e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   power: 0
---- !u!114 &114966921953138214
+  speed: 0
+--- !u!114 &114786536346049686
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1198571929996586}
+  m_GameObject: {fileID: 1772338834328968}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
@@ -196,7 +169,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 6e3f12e7742353a49871f54a576e946c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5192b0cb5d13951489e12f07c6144752, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -204,23 +177,22 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!222 &222510611346596786
+--- !u!222 &222816086496815258
 CanvasRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1198571929996586}
---- !u!224 &224963151362900270
+  m_GameObject: {fileID: 1772338834328968}
+--- !u!224 &224570381495146918
 RectTransform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1198571929996586}
+  m_GameObject: {fileID: 1772338834328968}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4557037587680464}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

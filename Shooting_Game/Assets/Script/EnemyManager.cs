@@ -8,6 +8,9 @@ public class EnemyManager : SingletonMonoBehaviour<EnemyManager>
 {
 	[SerializeField]
 	GameObject prefab;
+	
+	[SerializeField]
+	GameObject bombPrefab;
 
 	[SerializeField]
 	int stage = 1;
@@ -33,11 +36,11 @@ public class EnemyManager : SingletonMonoBehaviour<EnemyManager>
 	}
 
 	// エネミー生成
-	public void CreateEnemy(Vector2 pos, float life, EnemyMotionData emd)
+	public void CreateEnemy(Vector2 pos, float power, float life, EnemyMotionData emd)
 	{
 		GameObject instance = Instantiate(prefab, pos, Quaternion.Euler(Vector3.zero), transform);
 		instance.name = "Enemy";
-		instance.GetComponent<Enemy>().Init(pos, 10, emd);
+		instance.GetComponent<Enemy>().Init(pos, power, life, emd);
 	}
 
 	// エネミーの配置情報を読み取り
@@ -58,7 +61,7 @@ public class EnemyManager : SingletonMonoBehaviour<EnemyManager>
 				EnemyData ed = ReadArrangementLine(strData[i]);
 				arrangeSeq.AppendInterval(ed.time - arrangeSeq.Duration());
 				arrangeSeq.AppendCallback(() =>
-				CreateEnemy(new Vector2(ed.pos.x, ed.pos.y), ed.life, motionArray[ed.type]));
+				CreateEnemy(new Vector2(ed.pos.x, ed.pos.y), ed.power, ed.life, motionArray[ed.type]));
 				break;
 			case "END":     // ステージ終了
 
@@ -80,14 +83,15 @@ public class EnemyManager : SingletonMonoBehaviour<EnemyManager>
 	EnemyData ReadArrangementLine(string str)
 	{
 		EnemyData ed = new EnemyData();
-		string[] s = new string[5];
+		string[] s = new string[6];
 
 		// 行単位のデータを読み込み
 		s = str.Split(':')[1].Split(new string[]{", "}, 0);
 		ed.time = float.Parse(s[0]);
 		ed.type = int.Parse(s[1]);
 		ed.pos = new Vector2(float.Parse(s[2]), float.Parse(s[3]));
-		ed.life = int.Parse(s[4]);
+		ed.power = int.Parse(s[4]);
+		ed.life = int.Parse(s[5]);
 		
 		return ed;
 	}
@@ -109,6 +113,9 @@ public class EnemyManager : SingletonMonoBehaviour<EnemyManager>
 			{
 				switch(line[j].Split(':')[0])
 				{
+				case "POP":	// 出現方法
+					motionArray[i].popType = int.Parse(line[j].Split(':')[1]);
+					break;
 				case "MOVE":	// 移動データを追加
 					motionArray[i].move.Add(ReadEnemyMove(line[j].Split(':')[1]));
 					break;
@@ -118,8 +125,9 @@ public class EnemyManager : SingletonMonoBehaviour<EnemyManager>
 				case "SHOT2":	// 自由弾データを追加
 					motionArray[i].shotF.Add(ReadEnemyShot(line[j].Split(':')[1]));
 					break;
-				case "ESCAPE":	// 逃げる時間
-					motionArray[i].escTime = float.Parse(line[j].Split(':')[1]);
+				case "ESCAPE":	// 逃げ方・時間
+					motionArray[i].escType = int.Parse(line[j].Split(':')[1].Split(',')[0]);
+					motionArray[i].escTime = float.Parse(line[j].Split(':')[1].Split(',')[1]);
 					break;
 				}
 			}
@@ -147,27 +155,35 @@ public class EnemyManager : SingletonMonoBehaviour<EnemyManager>
 		EnemyShot es = new EnemyShot();
 		
 		es.execTime		= float.Parse(s[0]);
-		es.power		= float.Parse(s[1]);
-		es.speed		= float.Parse(s[2]);
-		es.angleDeg		= float.Parse(s[3]);
+		es.speed		= float.Parse(s[1]);
+		es.angleDeg		= float.Parse(s[2]);
 
 		return es;
+	}
+
+	public void BombEffect(Vector2 pos)
+	{
+		GameObject instance = Instantiate(bombPrefab, transform);
+		instance.transform.localPosition = pos;
+		instance.name = "Bomb";
 	}
 }
 
 // 生成のためのデータ
 public class EnemyData
 {
-	public float time;
-	public int type;
-	public Vector2 pos;
-	public int life;
+	public float	time;
+	public int		type;
+	public Vector2	pos;
+	public float	power;
+	public int		life;
 
 	public EnemyData()
 	{
 		time	= 0;
 		type	= 0;
-		pos	= Vector2.zero;
+		pos		= Vector2.zero;
+		power	= 0;
 		life	= 0;
 	}
 }
@@ -175,11 +191,13 @@ public class EnemyData
 // モーションクラス
 public class EnemyMotionData
 {
-	// シーケンスでないのは、読み取り段階ではエネミー・プレイヤーのトランスフォームが存在しないため
+	// シーケンスでなくリストなのは、読み取り段階ではエネミー・プレイヤーのトランスフォームが存在しないため
+	public int              popType = 0;						// 出現の仕方
 	public List<EnemyMove>	move	= new List<EnemyMove>();	// 移動データ
 	public List<EnemyShot>	shotP	= new List<EnemyShot>();	// 対プレイヤー弾のショットデータ
 	public List<EnemyShot>	shotF	= new List<EnemyShot>();    // 自由発射弾のショットデータ
-	public float            escTime = 0;
+	public int              escType = 0;						// 逃げ方
+	public float            escTime = 0;						// 逃げるまでの時間
 }
 
 // 移動データクラス
@@ -194,7 +212,6 @@ public class EnemyMove
 public class EnemyShot
 {
 	public float execTime	= 0;
-	public float power		= 0;
 	public float speed		= 0;
 	public float angleDeg	= 0;
 }

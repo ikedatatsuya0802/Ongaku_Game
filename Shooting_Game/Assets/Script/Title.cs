@@ -11,9 +11,12 @@ public class Title : MonoBehaviour
 	
 	void Update()
 	{
-		if(Input.GetTouch(0).phase == TouchPhase.Began)
+		if(Input.touchCount > 0)
 		{
-			
+			if(Input.GetTouch(0).phase == TouchPhase.Began)
+			{
+
+			}
 		}
 	}
 }
