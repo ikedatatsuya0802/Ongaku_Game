@@ -13,10 +13,13 @@ public class Fade : SingletonMonoBehaviour<Fade>
 
 	Text t;
     
-	float FadeTime      = 2.0f; // フェードに掛かる時間
-    float TimeAfterFade = 3.0f; // シャッター後ロードまでの時間
+	[SerializeField]
+	float FadeTime      = 1.0f; // フェードに掛かる時間
+	
+	[SerializeField]
+	float TimeAfterFade = 1.0f; // フェード後ロードまでの時間
 
-    Image fadeImage;
+	Image fadeImage;
 
 	int fadeType = 0;
 
@@ -35,8 +38,8 @@ public class Fade : SingletonMonoBehaviour<Fade>
 	void Start()
 	{
 		// ゲームオブジェクト取得
-		sm						= GameObject.Find("ScreenManager").GetComponent<ScreenManager>();
-		fadeImage				= transform.Find("Fade").GetComponent<Image>();
+		sm			= GameObject.Find("ScreenManager").GetComponent<ScreenManager>();
+		fadeImage	= transform.Find("Fade").GetComponent<Image>();
 
 		t			= transform.Find("LoadText").GetComponent<Text>();
 		isFading	= false;
@@ -55,7 +58,7 @@ public class Fade : SingletonMonoBehaviour<Fade>
 
 	
 	
-	public void FadeCall(string fadeSceneName, int type, float fadeTime = 0, float timeAfterFade = 0)
+	public void FadeCall(string fadeSceneName, int type = 0, float fadeTime = 0, float timeAfterFade = 0)
 	{
 		if(fadeTime > 0.1f) FadeTime = fadeTime;
 		if(timeAfterFade > 0.1f) TimeAfterFade = timeAfterFade;
